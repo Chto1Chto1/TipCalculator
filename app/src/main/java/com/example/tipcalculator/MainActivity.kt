@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tipcalculator.ui.theme.TipCalculatorTheme
 import java.util.Locale
+import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,11 +113,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(24.dp))
 
         // Слайдер чаевых
-        Text("Чаевые:", fontSize = 14.sp)
+        Text("Чаевые: ${tipPercent.toInt()}%", fontSize = 14.sp) // Выводим процент прямо здесь
         Slider(
             value = tipPercent,
-            onValueChange = { tipPercent = it },
+            onValueChange = {
+                tipPercent = it.roundToInt().toFloat()
+            },
             valueRange = 0f..25f,
+            steps = 24,
             modifier = Modifier.fillMaxWidth()
         )
         Row(
@@ -128,7 +132,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         }
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Радиокнопки скидки
+        // Радиокнопки
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Скидка:", fontSize = 14.sp)
             Spacer(modifier = Modifier.width(8.dp))
@@ -159,7 +163,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 val dishes = dishesCount.toIntOrNull()
 
                 if (amount != null && dishes != null && dishes > 0) {
-                    // 1. Выбор скидки программно
                     selectedDiscount = when {
                         dishes <= 2 -> 3
                         dishes in 3..5 -> 5
@@ -167,12 +170,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         else -> 10
                     }
 
-                    // 2. Расчет
                     val tip = amount * tipPercent / 100.0
                     val discount = amount * selectedDiscount / 100.0
                     val total = amount + tip - discount
 
-                    // 3. Вывод (String.format с Locale.US, чтобы были точки, а не запятые)
                     tipAmount = String.format(Locale.US, "%.2f", tip)
                     discountAmount = String.format(Locale.US, "%.2f", discount)
                     totalAmount = String.format(Locale.US, "%.2f", total)
@@ -188,7 +189,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         }
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Вывод результата
+        // Вывод результатов
         Text("Чаевые: $tipAmount", fontSize = 16.sp)
         Text("Скидка: $discountAmount", fontSize = 16.sp)
         Text("Итого: $totalAmount", fontSize = 20.sp, fontWeight = FontWeight.Bold)
