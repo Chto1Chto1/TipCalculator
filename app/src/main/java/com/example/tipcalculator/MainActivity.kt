@@ -57,6 +57,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var tipPercent by remember { mutableFloatStateOf(10f) }
     var selectedDiscount by remember { mutableIntStateOf(3) }
 
+    // Переменные для вывода результата
+    var tipAmount by remember { mutableStateOf("") }
+    var discountAmount by remember { mutableStateOf("") }
+    var totalAmount by remember { mutableStateOf("") }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -150,12 +155,18 @@ fun MainScreen(modifier: Modifier = Modifier) {
         // Кнопка расчета
         Button(
             onClick = {
-                // Логика расчета будет в следующих коммитах
+                // Логика в следующем коммите
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Рассчитать")
         }
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Вывод результата
+        Text("Чаевые: $tipAmount", fontSize = 16.sp)
+        Text("Скидка: $discountAmount", fontSize = 16.sp)
+        Text("Итого: $totalAmount", fontSize = 20.sp, fontWeight = FontWeight.Bold)
     }
 }
 
