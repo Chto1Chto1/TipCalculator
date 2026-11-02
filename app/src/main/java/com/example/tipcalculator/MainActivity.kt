@@ -15,12 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -51,7 +53,10 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(modifier: Modifier = Modifier) {
     var orderAmount by remember { mutableStateOf("") }
     var dishesCount by remember { mutableStateOf("") }
-    var tipPercent by remember { mutableFloatStateOf(10f) } // <-- Переменная слайдера
+    var tipPercent by remember { mutableFloatStateOf(10f) }
+
+    // Переменная для выбранной скидки (по умолчанию 3%)
+    var selectedDiscount by remember { mutableIntStateOf(3) }
 
     Column(
         modifier = modifier
@@ -116,6 +121,46 @@ fun MainScreen(modifier: Modifier = Modifier) {
         ) {
             Text("0", fontSize = 14.sp)
             Text("25", fontSize = 14.sp)
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Радиокнопки скидки
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Скидка:", fontSize = 14.sp)
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // 3%
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                RadioButton(
+                    selected = selectedDiscount == 3,
+                    onClick = null // Только для чтения
+                )
+                Text("3%", fontSize = 12.sp)
+            }
+            // 5%
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                RadioButton(
+                    selected = selectedDiscount == 5,
+                    onClick = null
+                )
+                Text("5%", fontSize = 12.sp)
+            }
+            // 7%
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                RadioButton(
+                    selected = selectedDiscount == 7,
+                    onClick = null
+                )
+                Text("7%", fontSize = 12.sp)
+            }
+            // 10%
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                RadioButton(
+                    selected = selectedDiscount == 10,
+                    onClick = null
+                )
+                Text("10%", fontSize = 12.sp)
+            }
         }
     }
 }
