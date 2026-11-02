@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tipcalculator.ui.theme.TipCalculatorTheme
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var tipPercent by remember { mutableFloatStateOf(10f) }
     var selectedDiscount by remember { mutableIntStateOf(3) }
 
-    // Переменные для вывода результата
     var tipAmount by remember { mutableStateOf("") }
     var discountAmount by remember { mutableStateOf("") }
     var totalAmount by remember { mutableStateOf("") }
@@ -155,7 +155,32 @@ fun MainScreen(modifier: Modifier = Modifier) {
         // Кнопка расчета
         Button(
             onClick = {
-                // Логика в следующем коммите
+                val amount = orderAmount.toDoubleOrNull()
+                val dishes = dishesCount.toIntOrNull()
+
+                if (amount != null && dishes != null && dishes > 0) {
+                    // 1. Выбор скидки программно
+                    selectedDiscount = when {
+                        dishes <= 2 -> 3
+                        dishes in 3..5 -> 5
+                        dishes in 6..10 -> 7
+                        else -> 10
+                    }
+
+                    // 2. Расчет
+                    val tip = amount * tipPercent / 100.0
+                    val discount = amount * selectedDiscount / 100.0
+                    val total = amount + tip - discount
+
+                    // 3. Вывод (String.format с Locale.US, чтобы были точки, а не запятые)
+                    tipAmount = String.format(Locale.US, "%.2f", tip)
+                    discountAmount = String.format(Locale.US, "%.2f", discount)
+                    totalAmount = String.format(Locale.US, "%.2f", total)
+                } else {
+                    totalAmount = "Ошибка ввода"
+                    tipAmount = "-"
+                    discountAmount = "-"
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
