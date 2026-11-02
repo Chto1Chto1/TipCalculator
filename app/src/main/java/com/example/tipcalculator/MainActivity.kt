@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     var orderAmount by remember { mutableStateOf("") }
+    var dishesCount by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -60,7 +61,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Поле суммы заказа
+        // Сумма заказа
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Сумма заказа:", fontSize = 14.sp)
             Spacer(modifier = Modifier.width(8.dp))
@@ -69,9 +70,27 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 onValueChange = { orderAmount = it },
                 modifier = Modifier.width(150.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFFFFC0CB), // Розовый фон
+                    focusedContainerColor = Color(0xFFFFC0CB),
                     unfocusedContainerColor = Color(0xFFFFC0CB),
-                    focusedBorderColor = Color.Transparent,     // Прозрачная рамка
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent
+                )
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Количество блюд
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Количество блюд:", fontSize = 14.sp)
+            Spacer(modifier = Modifier.width(8.dp))
+            OutlinedTextField(
+                value = dishesCount,
+                onValueChange = { dishesCount = it },
+                modifier = Modifier.width(80.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFFFC0CB),
+                    unfocusedContainerColor = Color(0xFFFFC0CB),
+                    focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent
                 )
             )
