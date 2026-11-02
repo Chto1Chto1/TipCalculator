@@ -5,15 +5,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +45,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
+    var orderAmount by remember { mutableStateOf("") }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -48,6 +59,24 @@ fun MainScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Spacer(modifier = Modifier.height(24.dp))
+
+        // Поле суммы заказа
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Сумма заказа:", fontSize = 14.sp)
+            Spacer(modifier = Modifier.width(8.dp))
+            OutlinedTextField(
+                value = orderAmount,
+                onValueChange = { orderAmount = it },
+                modifier = Modifier.width(150.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFFFC0CB), // Розовый фон
+                    unfocusedContainerColor = Color(0xFFFFC0CB),
+                    focusedBorderColor = Color.Transparent,     // Прозрачная рамка
+                    unfocusedBorderColor = Color.Transparent
+                )
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
